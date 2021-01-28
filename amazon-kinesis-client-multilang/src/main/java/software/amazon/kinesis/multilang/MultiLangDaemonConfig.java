@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
@@ -186,8 +187,10 @@ public class MultiLangDaemonConfig {
                     builder.build());
         } else {
             log.info("Using a fixed thread pool with {} max active threads.", maxActiveThreads);
-            return new ThreadPoolExecutor(maxActiveThreads, maxActiveThreads, 0L, TimeUnit.MILLISECONDS,
-                    new LinkedBlockingQueue<Runnable>(), builder.build());
+            return new ThreadPoolExecutor(
+                maxActiveThreads, maxActiveThreads, 0L, TimeUnit.MILLISECONDS, 
+                new ArrayBlockingQueue(maxActiveThreads)<Runnable>(), builder.build()
+            );
         }
     }
 
