@@ -187,10 +187,9 @@ public class MultiLangDaemonConfig {
                     builder.build());
         } else {
             log.info("Using a fixed thread pool with {} max active threads.", maxActiveThreads);
-            return new ThreadPoolExecutor(
-                maxActiveThreads, maxActiveThreads, 0L, TimeUnit.MILLISECONDS, 
-                new ArrayBlockingQueue(maxActiveThreads)<Runnable>(), builder.build()
-            );
+            return new ThreadPoolExecutor(maxActiveThreads, maxActiveThreads, 0L, TimeUnit.MILLISECONDS,
+                    new LinkedBlockingQueue<Runnable>(maxActiveThreads), builder.build());
+
         }
     }
 
